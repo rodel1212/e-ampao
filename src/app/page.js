@@ -152,7 +152,7 @@ export default function DigitalAmpao() {
           </div>
 
           <a
-            href="/gcash-qr.png"
+            href="/gcash-qr.jpeg"
             download="GCash-QR-Pamasko.png"
             className="mt-3 w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold flex items-center justify-center gap-2 transition"
           >
