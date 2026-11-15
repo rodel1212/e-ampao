@@ -4,15 +4,28 @@ import { useState, useRef } from "react";
 import confetti from "canvas-confetti";
 import { Gift, Volume2, VolumeX, Copy, Check, Download } from "lucide-react";
 
+const PATAWAD_TEXTS = [
+  "Patawad",
+  "Sigurado ka ba?",
+  "Weh? Patawad talaga?",
+  "Sige na Ninong/Ninang!",
+  "Bawal tumanggi ngayong Pasko!",
+  "Last chance, pindutin ang Buksan!",
+];
+
 export default function DigitalAmpao() {
   const [isOpen, setIsOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [copied, setCopied] = useState(false);
   const [senderName, setSenderName] = useState("");
+  const [patawadCount, setPatawadCount] = useState(0);
   const audioRef = useRef(null);
 
   const gcashNumber = "0956-326-9602";
   const accountName = "HE**N M.";
+
+  const maxPatawad = PATAWAD_TEXTS.length;
+  const isPatawadGone = patawadCount >= maxPatawad;
 
   const handleOpenAmpao = async () => {
     setIsOpen(true);
@@ -42,6 +55,10 @@ export default function DigitalAmpao() {
     } catch (error) {
       console.error("Webhook error:", error);
     }
+  };
+
+  const handlePatawadClick = () => {
+    setPatawadCount((prev) => prev + 1);
   };
 
   const toggleAudio = () => {
@@ -80,7 +97,7 @@ export default function DigitalAmpao() {
 
       {!isOpen ? (
         <div className="w-full max-w-[340px] sm:max-w-sm flex flex-col items-center">
-          <div className="mb-5 text-center">
+          <div className="mb-4 text-center">
             <span className="inline-block px-3 py-1 text-[11px] sm:text-xs font-semibold tracking-wider uppercase bg-yellow-500/20 text-yellow-300 border border-yellow-500/30 rounded-full">
               🎄 Maligayang Pasko 2026
             </span>
@@ -88,7 +105,7 @@ export default function DigitalAmpao() {
               May Digital Ampao Ka!
             </h1>
             <p className="text-xs sm:text-sm text-gray-300 mt-1 px-2">
-              Ilagay ang pangalan mo (optional) at pindutin ang sobre para buksan.
+              Ilagay ang pangalan mo (optional) at pumili kung bubuksan o patawad muna. 😄
             </p>
           </div>
 
@@ -100,29 +117,54 @@ export default function DigitalAmpao() {
             className="w-full mb-5 px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-center text-base sm:text-sm text-white placeholder-gray-400 focus:outline-none focus:border-yellow-400 transition"
           />
 
-          <button
-            onClick={handleOpenAmpao}
-            className="group relative w-64 h-80 sm:w-72 sm:h-96 bg-gradient-to-br from-red-600 via-red-700 to-red-900 rounded-3xl shadow-[0_0_45px_rgba(220,38,38,0.5)] border-2 border-yellow-400/70 flex flex-col items-center justify-between p-5 sm:p-6 transition-transform duration-200 hover:scale-105 active:scale-95 cursor-pointer touch-manipulation"
-          >
-            <div className="w-full text-center border-b border-yellow-400/30 pb-3 sm:pb-4">
-              <p className="text-yellow-300 font-serif tracking-widest text-[11px] sm:text-xs uppercase">
+          {/* Digital Ampao Visual */}
+          <div className="relative w-60 h-64 sm:w-64 sm:h-72 bg-gradient-to-br from-red-600 via-red-700 to-red-900 rounded-3xl shadow-[0_0_45px_rgba(220,38,38,0.5)] border-2 border-yellow-400/70 flex flex-col items-center justify-between p-5 mb-6">
+            <div className="w-full text-center border-b border-yellow-400/30 pb-2.5">
+              <p className="text-yellow-300 font-serif tracking-widest text-[11px] uppercase">
                 Season&apos;s Greetings
               </p>
             </div>
 
-            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-tr from-yellow-500 to-yellow-300 shadow-xl flex flex-col items-center justify-center text-red-950 font-bold group-hover:rotate-12 group-active:rotate-12 transition-transform">
-              <Gift className="w-7 h-7 sm:w-8 sm:h-8 mb-1" />
-              <span className="text-[11px] sm:text-xs tracking-wider uppercase">
-                Buksan
-              </span>
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-yellow-500 to-yellow-300 shadow-xl flex items-center justify-center text-red-950 font-bold animate-bounce">
+              <Gift className="w-8 h-8 sm:w-9 sm:h-9" />
             </div>
 
             <div className="text-center">
-              <p className="text-yellow-200/90 text-xs sm:text-sm font-medium">
-                Tap to open your blessing ✨
+              <p className="text-yellow-200/90 text-xs font-medium">
+                {isPatawadGone
+                  ? "Wala nang Patawad button! Buksan na! 😂"
+                  : "Namamasko po! ✨"}
               </p>
             </div>
-          </button>
+          </div>
+
+          {/* Buksan & Patawad Buttons */}
+          <div className="w-full flex flex-col items-center justify-center gap-3">
+            <button
+              onClick={handleOpenAmpao}
+              style={{
+                fontSize: `${Math.min(15 + patawadCount * 3.5, 32)}px`,
+                paddingTop: `${Math.min(12 + patawadCount * 4, 28)}px`,
+                paddingBottom: `${Math.min(12 + patawadCount * 4, 28)}px`,
+              }}
+              className="w-full rounded-2xl bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500 hover:from-yellow-300 hover:to-amber-400 active:scale-95 text-red-950 font-extrabold tracking-wide uppercase shadow-[0_0_25px_rgba(250,204,21,0.5)] transition-all duration-200 cursor-pointer touch-manipulation"
+            >
+              {isPatawadGone ? "🧧 BUKSAN NA! 🧧" : "🧧 Buksan"}
+            </button>
+
+            {!isPatawadGone && (
+              <button
+                onClick={handlePatawadClick}
+                style={{
+                  transform: `scale(${Math.max(1 - patawadCount * 0.1, 0.55)})`,
+                  opacity: Math.max(1 - patawadCount * 0.12, 0.35),
+                }}
+                className="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-gray-300 text-xs font-medium transition-all duration-200 cursor-pointer touch-manipulation"
+              >
+                {PATAWAD_TEXTS[patawadCount]}
+              </button>
+            )}
+          </div>
         </div>
       ) : (
         <div className="w-full max-w-[360px] sm:max-w-sm bg-slate-900/90 backdrop-blur-xl border border-yellow-400/40 rounded-3xl p-5 sm:p-6 shadow-2xl text-center">
