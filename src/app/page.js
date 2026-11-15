@@ -4,15 +4,6 @@ import { useState, useRef } from "react";
 import confetti from "canvas-confetti";
 import { Gift, Volume2, VolumeX, Copy, Check, Download } from "lucide-react";
 
-const PATAWAD_TEXTS = [
-  "Patawad",
-  "Sigurado ka ba?",
-  "Weh? Patawad talaga?",
-  "Sige na! ",
-  "Bawal tumanggi ngayong Pasko!",
-  "Last chance, pindutin ang Buksan!",
-];
-
 export default function DigitalAmpao() {
   const [isOpen, setIsOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -23,9 +14,6 @@ export default function DigitalAmpao() {
 
   const gcashNumber = "0956-326-9602";
   const accountName = "HE**N M.";
-
-  const maxPatawad = PATAWAD_TEXTS.length;
-  const isPatawadGone = patawadCount >= maxPatawad;
 
   const handleOpenAmpao = async () => {
     setIsOpen(true);
@@ -131,42 +119,31 @@ export default function DigitalAmpao() {
 
             <div className="text-center">
               <p className="text-yellow-200/90 text-xs font-medium">
-                {isPatawadGone
-                  ? "Wala nang Patawad button! Buksan na! 😂"
-                  : "Namamasko po! ✨"}
+                Namamasko po! ✨
               </p>
             </div>
           </div>
 
-          {/* Buksan & Patawad Buttons (Same Size & Style sa Umpisa) */}
+          {/* Unlimited Growing Buksan & Consistent Patawad Buttons */}
           <div className="w-full flex flex-col items-center justify-center gap-3">
             <button
               onClick={handleOpenAmpao}
               style={{
-                fontSize: `${Math.min(15 + patawadCount * 3.5, 32)}px`,
-                paddingTop: `${Math.min(14 + patawadCount * 4, 30)}px`,
-                paddingBottom: `${Math.min(14 + patawadCount * 4, 30)}px`,
+                fontSize: `${15 + patawadCount * 4}px`,
+                paddingTop: `${14 + patawadCount * 6}px`,
+                paddingBottom: `${14 + patawadCount * 6}px`,
               }}
-              className="w-full px-4 rounded-2xl bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500 hover:from-yellow-300 hover:to-amber-400 active:scale-95 text-red-950 font-extrabold tracking-wide uppercase shadow-[0_0_25px_rgba(250,204,21,0.5)] transition-all duration-200 cursor-pointer touch-manipulation"
+              className="w-full px-4 rounded-2xl bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500 hover:from-yellow-300 hover:to-amber-400 active:scale-95 text-red-950 font-extrabold tracking-wide uppercase shadow-[0_0_25px_rgba(250,204,21,0.5)] transition-all duration-200 cursor-pointer touch-manipulation z-10"
             >
-              {isPatawadGone ? "🧧 BUKSAN NA! 🧧" : "🧧 BUKSA​N"}
+              🧧 BUKSAN
             </button>
 
-            {!isPatawadGone && (
-              <button
-                onClick={handlePatawadClick}
-                style={{
-                  fontSize: `${Math.max(15 - patawadCount * 1.5, 9)}px`,
-                  paddingTop: `${Math.max(14 - patawadCount * 1.8, 5)}px`,
-                  paddingBottom: `${Math.max(14 - patawadCount * 1.8, 5)}px`,
-                  width: `${Math.max(100 - patawadCount * 13, 30)}%`,
-                  opacity: Math.max(1 - patawadCount * 0.12, 0.35),
-                }}
-                className="px-4 rounded-2xl bg-white/10 hover:bg-white/20 active:scale-95 border border-white/25 text-white font-extrabold tracking-wide uppercase shadow-lg transition-all duration-200 cursor-pointer touch-manipulation"
-              >
-                {patawadCount === 0 ? "🙏 PATAWAD" : PATAWAD_TEXTS[patawadCount]}
-              </button>
-            )}
+            <button
+              onClick={handlePatawadClick}
+              className="w-full py-[14px] px-4 rounded-2xl bg-white/10 hover:bg-white/20 active:scale-95 border border-white/25 text-white text-[15px] font-extrabold tracking-wide uppercase shadow-lg transition-all duration-200 cursor-pointer touch-manipulation"
+            >
+              🙏 PATAWAD
+            </button>
           </div>
         </div>
       ) : (
