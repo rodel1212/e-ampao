@@ -131,7 +131,7 @@ export default function DigitalAmpao() {
 
           <div className="bg-white p-4 rounded-2xl shadow-inner mx-auto w-60 h-60 flex items-center justify-center">
             <img
-              src="/gcash-qr.jpeg"
+              src="/gcash-qr.jpg"
               alt="GCash QR Code"
               className="w-full h-full object-contain rounded-lg"
             />
@@ -152,7 +152,7 @@ export default function DigitalAmpao() {
           </div>
 
           <a
-            href="/gcash-qr.jpeg"
+            href="/gcash-qr.jpg"
             download="GCash-QR-Pamasko.png"
             className="mt-3 w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold flex items-center justify-center gap-2 transition"
           >
