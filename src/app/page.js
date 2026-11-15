@@ -125,7 +125,7 @@ export default function DigitalAmpao() {
           </button>
         </div>
       ) : (
-        <div className="w-full max-w-[350px] sm:max-w-sm bg-slate-900/90 backdrop-blur-xl border border-yellow-400/40 rounded-3xl p-5 sm:p-6 shadow-2xl text-center">
+        <div className="w-full max-w-[360px] sm:max-w-sm bg-slate-900/90 backdrop-blur-xl border border-yellow-400/40 rounded-3xl p-5 sm:p-6 shadow-2xl text-center">
           <div className="inline-block px-3 py-1 rounded-full bg-red-500/20 text-red-300 text-[11px] sm:text-xs font-semibold mb-2">
             🎅 Merry Christmas &amp; Happy New Year!
           </div>
@@ -140,11 +140,11 @@ export default function DigitalAmpao() {
             ! Tumatanggap po kami ng cashless pamasko. 😄
           </p>
 
-          <div className="bg-white p-3 sm:p-4 rounded-2xl shadow-inner mx-auto w-52 h-52 sm:w-60 sm:h-60 flex items-center justify-center">
+          <div className="bg-blue-600 p-1.5 rounded-2xl shadow-lg mx-auto w-full max-w-[260px] sm:max-w-[280px] overflow-hidden flex items-center justify-center">
             <img
               src="/gcash-qr.jpg"
               alt="GCash QR Code"
-              className="w-full h-full object-contain rounded-lg"
+              className="w-full h-auto max-h-[340px] object-contain rounded-xl"
             />
           </div>
 
