@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import confetti from "canvas-confetti";
 import { Gift, Volume2, VolumeX, Copy, Check, Download } from "lucide-react";
 
@@ -15,13 +15,44 @@ export default function DigitalAmpao() {
   const gcashNumber = "0956-326-9602";
   const accountName = "HE**N M.";
 
+  useEffect(() => {
+    const startAudio = () => {
+      if (!audioRef.current) return;
+      audioRef.current.volume = 0.7;
+      audioRef.current
+        .play()
+        .then(() => {
+          setIsPlaying(true);
+          window.removeEventListener("pointerdown", startAudio);
+          window.removeEventListener("keydown", startAudio);
+        })
+        .catch(() => {
+          setIsPlaying(false);
+        });
+    };
+
+    // Subukang i-play agad pagka-load ng page
+    startAudio();
+
+    // Fallback: kapag na-block ng browser autoplay, tutugtog agad sa unang tap/type
+    window.addEventListener("pointerdown", startAudio);
+    window.addEventListener("keydown", startAudio);
+
+    return () => {
+      window.removeEventListener("pointerdown", startAudio);
+      window.removeEventListener("keydown", startAudio);
+    };
+  }, []);
+
   const handleOpenAmpao = async () => {
     setIsOpen(true);
 
-    if (audioRef.current) {
+    if (audioRef.current && audioRef.current.paused) {
       audioRef.current.volume = 0.7;
-      audioRef.current.play().catch((err) => console.log("Audio play blocked:", err));
-      setIsPlaying(true);
+      audioRef.current
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch((err) => console.log("Audio play blocked:", err));
     }
 
     confetti({
@@ -49,14 +80,19 @@ export default function DigitalAmpao() {
     setPatawadCount((prev) => prev + 1);
   };
 
-  const toggleAudio = () => {
+  const toggleAudio = (e) => {
+    e.stopPropagation();
     if (!audioRef.current) return;
     if (isPlaying) {
       audioRef.current.pause();
+      setIsPlaying(false);
     } else {
-      audioRef.current.play();
+      audioRef.current.volume = 0.7;
+      audioRef.current
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch((err) => console.log("Audio play blocked:", err));
     }
-    setIsPlaying(!isPlaying);
   };
 
   const copyNumber = () => {
@@ -67,21 +103,26 @@ export default function DigitalAmpao() {
 
   return (
     <main className="min-h-[100dvh] w-full bg-gradient-to-b from-slate-950 via-red-950 to-slate-950 text-white flex flex-col items-center justify-center px-4 py-6 relative overflow-x-hidden select-none">
-      <audio ref={audioRef} src="/christmas-song.mp3" loop preload="auto" />
+      <audio
+        ref={audioRef}
+        src="/christmas-song.mp3"
+        autoPlay
+        loop
+        preload="auto"
+      />
 
-      {isOpen && (
-        <button
-          onClick={toggleAudio}
-          className="fixed top-4 right-4 z-50 bg-white/15 backdrop-blur-md border border-white/25 p-3 rounded-full active:scale-90 transition touch-manipulation shadow-lg"
-          aria-label="Toggle Music"
-        >
-          {isPlaying ? (
-            <Volume2 className="w-5 h-5 text-yellow-400" />
-          ) : (
-            <VolumeX className="w-5 h-5 text-gray-300" />
-          )}
-        </button>
-      )}
+      {/* Music Toggle Button (Laging visible mula sa umpisa) */}
+      <button
+        onClick={toggleAudio}
+        className="fixed top-4 right-4 z-50 bg-white/15 backdrop-blur-md border border-white/25 p-3 rounded-full active:scale-90 transition touch-manipulation shadow-lg"
+        aria-label="Toggle Music"
+      >
+        {isPlaying ? (
+          <Volume2 className="w-5 h-5 text-yellow-400" />
+        ) : (
+          <VolumeX className="w-5 h-5 text-gray-300" />
+        )}
+      </button>
 
       {!isOpen ? (
         <div className="w-full max-w-[340px] sm:max-w-sm flex flex-col items-center">
